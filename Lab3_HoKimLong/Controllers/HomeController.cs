@@ -1,11 +1,10 @@
-﻿using Lab3_HoKimLong.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System;
 using System.Linq;
-using System.Web;
-using System.Web.Configuration;
 using System.Web.Mvc;
+using Lab3_HoKimLong.Models;
+using System.Data.Entity;
+using Lab3_HoKimLong.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace Lab3_HoKimLong.Controllers
 {
@@ -19,9 +18,23 @@ namespace Lab3_HoKimLong.Controllers
         public ActionResult Index()
         {
             var upcommingCourses = _dbContext.Courses
-            .Include(c => c.Lecturer).Include(c => c.Category)
-            .Where(c => c.DateTime> DateTime.Now);
-            return View(upcommingCourses);
+                                        .Include(c => c.Lecturer)
+                                        .Include(c => c.Category)
+                                        .Where(a => a.IsCanceled == false)
+                                        .Where(c => c.DateTime > DateTime.Now);
+
+            var userId = User.Identity.GetUserId();
+
+            var viewModel = new CoursesViewModel
+            {
+                UpcommingCourses = upcommingCourses,
+                ShowAction = User.Identity.IsAuthenticated,
+                Followings = _dbContext.Followings.Where(f => userId != null && f.FolloweeId == userId).ToList(),
+                Attendances = _dbContext.Attendances.Include(a => a.Course).ToList()        
+
+            };
+
+            return View(viewModel);
         }
 
         public ActionResult About()
@@ -37,6 +50,5 @@ namespace Lab3_HoKimLong.Controllers
 
             return View();
         }
-        
     }
 }

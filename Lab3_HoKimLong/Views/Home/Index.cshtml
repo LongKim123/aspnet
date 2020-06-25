@@ -1,45 +1,84 @@
-﻿@model IEnumerable<Lab3_HoKimLong.Models.Course>
-
+﻿@model Lab3_HoKimLong.ViewModels.CoursesViewModel
 @{
     ViewBag.Title = "Home Page";
 }
 
-<h2>Index</h2>
 <div class="row">
     <ul class="course">
-        @foreach (var course in Model)
+        @foreach (var course in Model.UpcommingCourses)
         {
             <li>
                 <div class="date">
-                     <div class="month"> @course.DateTime.ToString("MM") </div>
-                    <div class="day"> @course.DateTime.ToString("MM") </div>
-                </div> 
-                <div class="details">
-                     <span class="lecturer"> @course.Lecturer.Name</span>
-                    <span class="category"> @course.Category.Name</span>
-                <button data-course-id="@course.Id"class="btn btn-default" btn-sm js-toggle-atendanse>Going</button>
+                    <div class="month">
+                        @course.DateTime.ToString(" MM ")
+                    </div>
+                    <div class="day">
+                        @course.DateTime.ToString(" DD ")
+                    </div>
                 </div>
+                <div class="details">
+                    <span class="lecturer">
+                        @course.Lecturer.Name
+                        @if (Model.ShowAction)
+                        {
+                            if (Model.Followings.Any(x => x.FolloweeId == course.Lecturer.Id))
+                            {
+                                <button data-user-id="@course.LecturerId" class="btn btn-default btn-sm js-toggle-follow">Following?</button>
+                            }
+                            else
+                            {
+                                <button data-user-id="@course.LecturerId" class="btn btn-default btn-sm js-toggle-follow">Follow?</button>
+                            }
+
+                        }
+                    </span>
+                    <span class="category">
+                        @course.Category.Name
+                        @if (Model.ShowAction)
+                        {
+                            if (Model. Attendances.Any(x => x.CourseId == course.Id))
+                            {
+                                <button data-course-id="@course.Id" class="btn btn-sm btn-info">Going?</button>
+                            }
+                            else
+                            {
+                                <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                            }
+                        }
+                    </span>
+                </div>
+
             </li>
         }
+
     </ul>
-    @section script{
+</div>
+
+@section scripts{
     <script>
-        $(document).ready(function () {
-            $(".js-toggle-attendance").click(function (e) {
+        $(function () {
+            $('.js-toggle-attendance').click(function (e) {
                 var button = $(e.target);
-                $post("api/attendances", { courseId: button.attr("data-course-id") })
-                .done(function () {
+                $.post("/api/attendances", { CourseId: button.attr("data-course-id") }).done(function () {
                     button
                         .removeClass("btn-default")
                         .addClass("btn-info")
-                           .text("Going");
-                })
-                .fail(function () {
-                    alert("Something faile");
+                        .text("Going (Đi theo)");
+                }).fail(function () {
+                    alert("Something failed !!!" );
+                });
+            });
+
+
+            $('.js-toggle-follow').click(function (e) {
+                var button = $(e.target);
+                $.post("/api/followings", { FolloweeId: button.attr("data-user-id") }).done(function () {
+                    button
+                        .text("Following (Theo dõi)");
+                }).fail(function () {
+                    alert("Something failed !!!!!");
                 });
             });
         });
-        </script>
-        }
-    
-</div>
+    </script>
+}

@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Lab3_HoKimLong")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Lab3_HoKimLong")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("www.blogthuthuatwin10.com")]
+[assembly: AssemblyCompany("Lab3_HoKimLong")]
 [assembly: AssemblyProduct("Lab3_HoKimLong")]
-[assembly: AssemblyCopyright("Copyright © www.blogthuthuatwin10.com 2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright Lab3_HoKimLong ©  2017")]
+[assembly: AssemblyTrademark("Lab3_HoKimLong")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4ea1f80b-69c0-4dae-b607-7ee294cc11cd")]
+[assembly: Guid("69b1b45a-5eaf-4bc5-a7d3-c11dd406aaf8")]
 
 // Version information for an assembly consists of the following four values:
 //

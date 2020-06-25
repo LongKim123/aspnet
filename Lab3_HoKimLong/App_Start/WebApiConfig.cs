@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 
-namespace Lab3_HoKimLong
+
+namespace Lab3_HoKimLong.App_Start
 {
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
         {
+            // Web API configuration and services
+
+            // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -16,6 +21,13 @@ namespace Lab3_HoKimLong
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "UnFollow",
+                routeTemplate: "api/unfollow/{followerId}/{followeeId}",
+                defaults: new { controller = "Followings",action= "UnFollow", followerId = RouteParameter.Optional, followeeId = RouteParameter.Optional }
+                );
+
         }
     }
 }
